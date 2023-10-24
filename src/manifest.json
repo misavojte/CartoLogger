@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "CartoTracker",
+  "version": "0.0.1",
+  "description": "He Sees You When You're Browsing. He Knows When You're Lost. He Knows When Map's Been Bad Or Good...",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "downloads"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "matches": [
+        "https://atlas.mapy.cz/*"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
