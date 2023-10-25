@@ -23,4 +23,18 @@ export abstract class MonitorElementPointer extends MonitorElement {
     return path;
   };
 
+  evaluate(event: PointerEvent): void {
+    const time = this.getTime();
+    const element = event.target as HTMLElement;
+    const path = this.getPathFrom(element);
+    const pointerCoordinates = this.getPointerCoordinates(event);
+    void this.log({
+      type: this.eventType,
+      val: path,
+      ...time,
+      ...this.getSessionInfo(),
+      ...pointerCoordinates,
+    })
+  }
+
 }

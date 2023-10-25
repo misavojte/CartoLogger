@@ -59,8 +59,8 @@ const startScreen = async () => {
 
     recordingManager.on("stop", () => {
         monitors.clear();
-        void stopRecording();
         monitors = null;
+        void stopRecording();
     });
 
     recordingManager.init();

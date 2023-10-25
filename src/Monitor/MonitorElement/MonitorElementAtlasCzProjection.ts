@@ -6,10 +6,11 @@ import { Session } from "../../Session/Session";
  * @file MonitorElementAtlasCzProjection.ts
  */
 export class MonitorElementAtlasCzProjection extends MonitorElement {
-  lastType: 'projection' = 'projection';
-  constructor (session: Session, elements: HTMLInputElement[] | HTMLCollectionOf<HTMLInputElement> | NodeListOf<HTMLInputElement>) {
+  readonly type = 'projection';
+  constructor (session: Session, elements: HTMLInputElement[] | NodeListOf<HTMLInputElement>) {
     super(session, elements, 'change');
     this.evaluate = this.evaluate.bind(this);
+    this.logProjection('robinson', this.getStartTime());
   }
   evaluate (event: Event) {
     const time = this.getTime();
@@ -26,17 +27,12 @@ export class MonitorElementAtlasCzProjection extends MonitorElement {
     this.logProjection(text, time)
   }
 
-  start () {
-    super.start();
-    this.logProjection('robinson', this.getStartTime());
-  }
-
   logProjection (projection: string, time: { time: string, absoluteTime: string }) {
     void this.log({
       ...this.getSessionInfo(),
       ...time,
       val: projection,
-      type: this.lastType,
+      type: this.type,
     });
   }
 

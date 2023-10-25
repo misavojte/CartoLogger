@@ -2,15 +2,27 @@
 
 import { EventDataType } from "../commons/types";
 import { Session } from "../Session/Session";
+import {MonitorError} from "./MonitorError";
 
+/**
+ * Base class for all monitors.
+ * Monitors are used to log events. To store the logs, use with any storage class (preferably with IndexedDB implementation).
+ * Coupled with @see Session from which is logging time and other session info taken.
+ * If needed, use @see MonitorCollection to control multiple monitors at once.
+ * @abstract
+ */
 export abstract class Monitor {
-  session: Session;
-  abstract lastType: string;
-  onLogHooks: Array<(EventDataType) => any> = [];
+
+  abstract readonly type: string;
+  readonly session: Session;
+
+  private onLogHooks: Array<(data: EventDataType) => any> = [];
+  isActive: boolean = false;
   protected constructor(session: Session) {
     this.session = session;
   }
   log(data: EventDataType): void {
+    if (!this.isActive) throw new MonitorError("Monitor is not active");
     this.onLogHooks.forEach((cb) => cb(data))
   }
 
@@ -36,23 +48,28 @@ export abstract class Monitor {
     }
   }
 
-  on(event: "log", callback: (EventDataType) => any): void {
+  on(event: "log", callback: (data: EventDataType) => any): void {
     if(event !== "log") throw new Error("Invalid event type");
     this.onLogHooks.push(callback);
   }
 
-  off(event: "log", callback: (EventDataType) => any): void {
+  off(event: "log", callback: (data: EventDataType) => any): void {
     if(event !== "log") throw new Error("Invalid event type");
     this.onLogHooks = this.onLogHooks.filter((cb) => cb !== callback);
   }
 
   /**
-   * Clear the Monitor to stop logging and free up resources
+   * Clear the Monitor to stop logging and free up resources. Used before destroying the Monitor.
    */
-  abstract clear(): void;
+  clear(): void {
+    this.isActive = false;
+    this.onLogHooks = [];
+  }
 
   /**
    * Start the Monitor to begin logging
    */
-  abstract start(): void;
+  start(): void {
+    this.isActive = true;
+  }
 }

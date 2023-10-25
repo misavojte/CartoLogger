@@ -2,11 +2,11 @@ import { Monitor } from "./Monitor";
 import { Session } from "../Session/Session";
 
 export class MonitorUrl extends Monitor {
-  TIMER_INTERVAL = 10;
+  static TIMER_INTERVAL = 10;
   timerId: number;
   window: Window;
   lastUrl: string;
-  lastType: "url_change" = "url_change";
+  readonly type = "url_change";
 
   /**
    *
@@ -16,27 +16,28 @@ export class MonitorUrl extends Monitor {
    */
   constructor(session: Session, window: Window) {
     super(session);
-    void window.location.href; // throws if window is not a browser window
     this.window = window;
+    this.lastUrl = this.window.location.href; // throws if window is not a browser window
   }
 
-  start(): void {
-    this.lastUrl = this.window.location.href;
-    this.timerId = this.window.setInterval(this.evaluateUrl, this.TIMER_INTERVAL);
-    this.logUrl(this.lastUrl, this.getStartTime())
+  start() {
+    super.start();
+    this.updateUrl();
+    this.timerId = this.window.setInterval(this.evaluateUrl, MonitorUrl.TIMER_INTERVAL);
+    this.logUrl(this.lastUrl, this.getTime())
   }
 
   evaluateUrl = () => {
     if (this.lastUrl !== this.window.location.href) {
       this.logUrl(this.window.location.href, this.getTime());
-      this.lastUrl = this.window.location.href;
+      this.updateUrl();
     }
   }
 
   logUrl = (url: string, time: {time: string, absoluteTime: string}) => {
     void this.log({
       session: this.session,
-      type: this.lastType,
+      type: this.type,
       val: url,
       ...time,
       ...this.getSessionInfo()
@@ -45,6 +46,10 @@ export class MonitorUrl extends Monitor {
 
   clear(): void {
     this.window.clearInterval(this.timerId);
+  }
+
+  private updateUrl() {
+    this.lastUrl = this.window.location.href;
   }
 
 }

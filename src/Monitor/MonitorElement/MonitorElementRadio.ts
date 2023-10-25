@@ -6,8 +6,8 @@ import { Session } from "../../Session/Session";
  * @file MonitorElementRadio.ts
  */
 export class MonitorElementRadio extends MonitorElement {
-  lastType: string = 'radio';
-  constructor (session: Session, elements: HTMLInputElement[] | HTMLCollectionOf<HTMLInputElement>) {
+  type: string = 'radio';
+  constructor (session: Session, elements: HTMLInputElement[] | NodeListOf<HTMLInputElement>) {
     super(session, elements, 'change');
     this.evaluate = this.evaluate.bind(this);
   }
@@ -16,12 +16,12 @@ export class MonitorElementRadio extends MonitorElement {
     const target = event.target as HTMLInputElement;
     const name = target.name;
     // based on checked property
-    this.lastType = target.checked ? 'radio_on' : 'radio_off';
+    this.type = target.checked ? 'radio_on' : 'radio_off';
     void this.log({
       ...this.getSessionInfo(),
       ...this.getTime(),
       val: name,
-      type: this.lastType,
+      type: this.type,
     });
 
   }
