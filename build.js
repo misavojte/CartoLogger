@@ -3,6 +3,8 @@ const os = require('os');
 const fs = require('fs');
 const path = require('path');
 
+console.log(`Running Node.js version: ${process.version}`);
+
 const deleteEmptyFolders = (dir) => {
     const items = fs.readdirSync(dir);
     items.forEach(item => {
@@ -17,7 +19,7 @@ const deleteEmptyFolders = (dir) => {
     });
 };
 
-exec('rollup -c', (err, stdout, stderr) => {
+exec('rollup -c', { env: process.env }, (err, stdout, stderr) => {
     if (err) {
         console.error(`Error during rollup: ${err}`);
         return;
@@ -30,7 +32,7 @@ exec('rollup -c', (err, stdout, stderr) => {
         'xcopy /E /I /Y ".\\src\\" ".\\dist\\" && forfiles /P .\\dist\\ /S /M *.ts /C "cmd /c del @path"' :
         'rsync -av --prune-empty-dirs --exclude=\'*.ts\' ./src/ ./dist/';
 
-    exec(copyCommand, (err, stdout, stderr) => {
+    exec(copyCommand, { env: process.env }, (err, stdout, stderr) => {
         if (err) {
             console.error(`Error during copy: ${err}`);
             return;

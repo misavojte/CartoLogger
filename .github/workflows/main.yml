@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '14.x'
 
       - name: Install Dependencies
         run: npm install
@@ -27,7 +27,7 @@ jobs:
         run: ls -la
 
       - name: Zip Distributable
-        run: zip -r dist.zip ./dist || true
+        run: zip -r dist.zip ./dist
 
       - name: Upload ZIP as Artifact
         uses: actions/upload-artifact@v2
