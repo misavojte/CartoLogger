@@ -10,7 +10,6 @@ export class MonitorElementAtlasCzProjection extends MonitorElement {
   constructor (session: Session, elements: HTMLInputElement[] | NodeListOf<HTMLInputElement>) {
     super(session, elements, 'change');
     this.evaluate = this.evaluate.bind(this);
-    this.logProjection('robinson', this.getStartTime());
   }
   evaluate (event: Event) {
     const time = this.getTime();
@@ -34,6 +33,11 @@ export class MonitorElementAtlasCzProjection extends MonitorElement {
       val: projection,
       type: this.type,
     });
+  }
+
+  start() {
+    super.start();
+    this.logProjection('robinson', this.getStartTime());
   }
 
 }

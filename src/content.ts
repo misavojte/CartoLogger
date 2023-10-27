@@ -52,6 +52,8 @@ const startScreen = async () => {
             new MonitorElementPointerDown(sessionToUse, [body]),
         ]);
 
+        console.log(monitors);
+
         monitors.on("log", (data) => {
             sendData(data);
         });

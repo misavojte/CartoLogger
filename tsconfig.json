@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "target": "esnext",
     "module": "esnext",
+    "moduleResolution": "node",
     "outDir": "./dist",
     "removeComments": true,
+    "target": "esnext"
   },
   "include": ["src/**/*.ts", "src/**/*.json"],
   "exclude": ["node_modules"]
