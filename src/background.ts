@@ -1,3 +1,7 @@
+/*
+TODO: Getting data from DB to CSV dont work if n > 500 (n = number of rows in DB)
+ */
+
 import {EventDataType} from "./commons/types";
 import { Session } from "./Session/Session";
 

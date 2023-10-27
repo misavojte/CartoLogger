@@ -5,6 +5,7 @@
   "description": "He Sees You When You're Browsing. He Knows When You're Lost. He Knows When Map's Been Bad Or Good...",
   "permissions": [
     "activeTab",
+    "tabs",
     "storage",
     "downloads"
   ],

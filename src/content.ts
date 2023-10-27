@@ -1,4 +1,7 @@
 /// <reference path="../node_modules/chrome-types/index.d.ts" />
+/*
+TODO: Reload page after chrome tab is visible again (covered by Tobii task screen)
+ */
 
 import { RecordingManager } from "./RecordingManager/RecordingManager";
 import { StartScreenElement } from "./StartScreen/StartScreenElement";
