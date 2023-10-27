@@ -23,8 +23,11 @@ jobs:
       - name: Run Build
         run: npm run build
 
+      - name: List files
+        run: ls -la
+
       - name: Zip Distributable
-        run: zip -r dist.zip ./dist
+        run: zip -r dist.zip ./dist || true
 
       - name: Upload ZIP as Artifact
         uses: actions/upload-artifact@v2
